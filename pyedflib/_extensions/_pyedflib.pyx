@@ -194,13 +194,19 @@ cdef class CyEdfReader:
 
             for encoding in encodings:
                 try:
+                    print(f'Try open file with encoding: {encoding}')
+
                     file_name_bytes = file_name.encode(encoding, 'strict')
                     file_name_cstr = file_name_bytes
                     result = c_edf.edfopen_file_readonly(file_name_cstr, &self.hdr, annotations_mode, check_file_size)
 
                     if result == 0:
+                        print(f'Open file with encoding: {encoding}')
+
                         self.file_name = file_name
                         return True
+                    else:
+                        print(f'Failed to open file with encoding {encoding}.')
                 except UnicodeEncodeError:
                     warnings.warn('Can not encode filename {0} with encoding {1}.'.format(file_name, encoding))
             else:
