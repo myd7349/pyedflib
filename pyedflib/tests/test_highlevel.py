@@ -235,10 +235,10 @@ class TestHighLevel(unittest.TestCase):
     def test_read_unicode_at_start(self):
         signals = np.random.rand(3, 256*60) # then rescale to 0-1
         signals = (signals - signals.min()) / (signals.max() - signals.min())
-        success = highlevel.write_edf_quick(self.edfplus_data_file, signals, sfreq=256)
+        success = highlevel.write_edf_quick(self.test_unicode_at_start, signals, sfreq=256)
         self.assertTrue(success)
-        shutil.copy(self.edfplus_data_file, self.test_unicode_at_start)
         signals2, _, _ = highlevel.read_edf(self.test_unicode_at_start)
+        self.assertTrue(len(signals) == 3)
         self.assertTrue(os.path.isfile(self.test_unicode_at_start), 'File does not exist')
 
     def test_read_header(self):
